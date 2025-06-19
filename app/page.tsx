@@ -1,7 +1,7 @@
 import Link from 'next/link';
-
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import Header from './components/Header';
+import Navbar from '@/app/components/Navbar'
+import Footer from '@/app/components/Footer'
 
 export default function Home() {
   return (
