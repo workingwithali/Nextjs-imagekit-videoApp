@@ -29,6 +29,6 @@ A full-stack video-sharing web application built with **Next.js**, **TypeScript*
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/video-sharing-platform.git
-cd video-sharing-platform
+git clone https://github.com/workingwithali/nextjs-imagekit-videoapp.git
+cd nextjs-imagekit-videoapp
 npm install
