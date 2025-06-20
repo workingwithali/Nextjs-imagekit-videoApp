@@ -33,12 +33,12 @@ git clone https://github.com/workingwithali/nextjs-imagekit-videoapp.git
 cd nextjs-imagekit-videoapp
 npm install
 ## 👨‍💻 Author
-
+```
 **Ali Rashid**  
 Full Stack Next.js Dev | ML & AI  
 📍 Faisalabad, Pakistan
 
-```
+
 [![GitHub](https://img.shields.io/badge/GitHub-@workingwithali-181717?style=for-the-badge&logo=github)](https://github.com/workingwithali)  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Ali%20Rashid-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/workingwithali)  
 [![Twitter](https://img.shields.io/badge/Twitter-@workingwithali-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/workingwithali)  
