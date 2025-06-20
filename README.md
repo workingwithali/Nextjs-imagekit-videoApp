@@ -5,7 +5,6 @@ A full-stack video-sharing web application built with **Next.js**, **TypeScript*
 ## 🚀 Features
 
 - ✅ User authentication (Signup / Login / Logout)
-- ✅ Social login with Google and GitHub
 - ✅ Upload videos using ImageKit
 - ✅ Display uploaded videos on the home page
 - ✅ Secure session management with NextAuth
