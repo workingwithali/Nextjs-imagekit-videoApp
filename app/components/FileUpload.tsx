@@ -1,13 +1,13 @@
-"use client"; // This component must be a client component
+"use client";
 
 import {
+  upload,
   ImageKitAbortError,
   ImageKitInvalidRequestError,
   ImageKitServerError,
   ImageKitUploadNetworkError,
-  upload,
 } from "@imagekit/next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 interface FileUploadProps {
   onSuccess: (res: any) => void;
@@ -15,27 +15,26 @@ interface FileUploadProps {
   fileType?: "image" | "video";
 }
 
-const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
+const FileUpload = ({ onSuccess, onProgress, fileType = "image" }: FileUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  //optional validation
-
   const validateFile = (file: File) => {
-    if (fileType === "video") {
-      if (!file.type.startsWith("video/")) {
-        setError("Please upload a valid video file");
-      }
+    if (fileType === "video" && !file.type.startsWith("video/")) {
+      setError("Please upload a valid video file");
+      return false;
     }
+
     if (file.size > 100 * 1024 * 1024) {
       setError("File size must be less than 100 MB");
+      return false;
     }
+
     return true;
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (!file || !validateFile(file)) return;
 
     setUploading(true);
@@ -53,30 +52,42 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
         expire: auth.expire,
         token: auth.token,
         onProgress: (event) => {
-          if(event.lengthComputable && onProgress){
+          if (event.lengthComputable && onProgress) {
             const percent = (event.loaded / event.total) * 100;
-            onProgress(Math.round(percent))
+            onProgress(Math.round(percent));
           }
         },
-        
       });
-      onSuccess(res)
-    } catch (error) {
-        console.error("Upload failed", error)
+
+      onSuccess(res);
+    } catch (error: any) {
+      if (
+        error instanceof ImageKitUploadNetworkError ||
+        error instanceof ImageKitAbortError ||
+        error instanceof ImageKitInvalidRequestError ||
+        error instanceof ImageKitServerError
+      ) {
+        setError("Upload failed: " + error.message);
+      } else {
+        setError("Unexpected error occurred during upload.");
+      }
+      console.error("Upload error", error);
     } finally {
-        setUploading(false)
+      setUploading(false);
     }
   };
 
   return (
-    <>
+    <div className="space-y-2">
       <input
         type="file"
         accept={fileType === "video" ? "video/*" : "image/*"}
         onChange={handleFileChange}
+        className="file-input file-input-bordered w-full"
       />
-      {uploading && <span>Loading....</span>}
-    </>
+      {uploading && <span className="text-sm text-blue-600">Uploading...</span>}
+      {error && <span className="text-sm text-red-600">{error}</span>}
+    </div>
   );
 };
 

@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Home, User } from "lucide-react";
 import { useNotification } from "./Notification";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Header() {
   const { data: session } = useSession();
   const { showNotification } = useNotification();
   const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const handleSignOut = async () => {
     try {
@@ -20,6 +21,24 @@ export default function Header() {
       showNotification("Failed to sign out", "error");
     }
   };
+
+  // Close popup on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        setShowPopup(false);
+      }
+    };
+    if (showPopup) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showPopup]);
 
   return (
     <>
@@ -38,67 +57,61 @@ export default function Header() {
               Video with AI
             </Link>
           </div>
-          <div className="flex flex-1 justify-end px-2">
+          <div className="flex flex-1 justify-end px-2 relative">
             <button
-              onClick={() => setShowPopup(true)}
+              onClick={() => setShowPopup(!showPopup)}
               className="btn btn-ghost btn-circle"
               title="Account"
             >
               <User className="w-5 h-5" />
             </button>
-          </div>
-        </div>
-      </div>
 
-      {/* Popup Modal */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center">
-          <div className="bg-base-100 rounded-lg shadow-lg w-80 p-4 relative">
-            <button
-              onClick={() => setShowPopup(false)}
-              className="absolute top-2 right-2 text-lg btn btn-sm btn-circle"
-              aria-label="Close"
-            >
-              ✕
-            </button>
-            {session ? (
-              <>
-                <div className="mb-2 text-sm text-gray-600">
-                  Signed in as <strong>{session.user?.email?.split("@")[0]}</strong>
-                </div>
-                <div className="divider my-2"></div>
-                <Link
-                  href="/upload"
-                  onClick={() => {
-                    showNotification("Welcome to Admin Dashboard", "info");
-                    setShowPopup(false);
-                  }}
-                  className="btn btn-block btn-outline mb-2"
-                >
-                  Upload Video
-                </Link>
-                <button
-                  onClick={handleSignOut}
-                  className="btn btn-block btn-error"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/login"
-                onClick={() => {
-                  showNotification("Please sign in to continue", "info");
-                  setShowPopup(false);
-                }}
-                className="btn btn-block"
+            {showPopup && (
+              <div
+                ref={popupRef}
+                className="absolute right-0 mt-12 w-64 bg-base-100 rounded-lg shadow-xl z-50 p-3 border border-2"
               >
-                Login
-              </Link>
+                {session ? (
+                  <>
+                    <div className="text-sm text-gray-500 mb-1">
+                      Signed in as{" "}
+                      <strong>{session.user?.email?.split("@")[0]}</strong>
+                    </div>
+                    <div className="divider my-2"></div>
+                    <Link
+                      href="/upload"
+                      onClick={() => {
+                        showNotification("Welcome to Admin Dashboard", "info");
+                        setShowPopup(false);
+                      }}
+                      className="block w-full px-3 py-2 rounded hover:bg-base-200 text-left"
+                    >
+                      Upload Video
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full px-3 py-2 mt-1 text-error hover:bg-base-200 text-left rounded"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={() => {
+                      showNotification("Please sign in to continue", "info");
+                      setShowPopup(false);
+                    }}
+                    className="block w-full px-3 py-2 hover:bg-base-200 rounded text-left"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
             )}
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
