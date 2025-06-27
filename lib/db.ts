@@ -18,10 +18,10 @@ export async function connectToDatabase() {
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: true,
-      maxPoolSize: 10,
-    };
+    // const opts = {
+    //   bufferCommands: true,
+    //   maxPoolSize: 10,
+    // };
 
     cached.promise = mongoose.connect(MONGODB_URI).then(() => mongoose.connection);
   }
