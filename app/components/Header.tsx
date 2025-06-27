@@ -43,18 +43,19 @@ export default function Header() {
   return (
     <>
       <div className="navbar bg-base-300 sticky top-0 z-40">
-        <div className="container mx-auto">
-          <div className="flex-1 px-2 lg:flex-none">
+        <div className="container mx-auto ">
+          <div className="flex-1 px-2 lg:flex-none  ">
             <Link
               href="/"
-              className="btn btn-ghost text-xl gap-2 normal-case font-bold"
+              className="btn btn-ghost text-xl gap-2 normal-case font-bold flex items-center pt-2"
               prefetch={true}
               onClick={() =>
                 showNotification("Welcome to ImageKit ReelsPro", "info")
               }
             >
               <Home className="w-5 h-5" />
-              Video with AI
+              <h1> Video with AI</h1>
+             
             </Link>
           </div>
           <div className="flex flex-1 justify-end px-2 relative">
