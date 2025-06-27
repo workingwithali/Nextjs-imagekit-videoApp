@@ -75,8 +75,8 @@ export default function Header() {
                 {session ? (
                   <>
                     <div className="text-sm text-gray-500 mb-1">
-                      Signed in as{" "}
-                      <strong>{session.user?.email?.split("@")[0]}</strong>
+                      Signed In As{" "}
+                      <strong>{session.user?.email?.split("@")[0].toUpperCase()}</strong>
                     </div>
                     <div className="divider my-2"></div>
                     <Link
