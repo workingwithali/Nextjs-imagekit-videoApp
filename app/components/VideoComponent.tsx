@@ -13,14 +13,13 @@ export default function VideoComponent({ video }: { video: IVideo }) {
             style={{ aspectRatio: "9/16" }}
           >
             <Video
-              path={video.videoUrl}
+              src={video.videoUrl}
               transformation={[
                 {
                   height: "1920",
                   width: "1080",
                 },
               ]}
-              src="/video.mp4"
               poster={video.thumbnailUrl}
               controls={video.controls}
               className="w-full h-full object-cover"
