@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const NextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ["ik.imagekit.io"],
+  },
 };
 
-export default nextConfig;
+export default NextConfig;
+
+
