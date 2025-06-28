@@ -1,4 +1,5 @@
-import { IKVideo } from "imagekitio-next";
+import { Video } from '@imagekit/next';
+
 import Link from "next/link";
 import { IVideo } from "@/models/Video";
 
@@ -11,7 +12,7 @@ export default function VideoComponent({ video }: { video: IVideo }) {
             className="rounded-xl overflow-hidden relative w-full"
             style={{ aspectRatio: "9/16" }}
           >
-            <IKVideo
+            <Video
               path={video.videoUrl}
               transformation={[
                 {
@@ -19,6 +20,8 @@ export default function VideoComponent({ video }: { video: IVideo }) {
                   width: "1080",
                 },
               ]}
+              src="/video.mp4"
+              poster={video.thumbnailUrl}
               controls={video.controls}
               className="w-full h-full object-cover"
             />

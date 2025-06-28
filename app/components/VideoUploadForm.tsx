@@ -101,13 +101,13 @@ function VideoUploadForm() {
         <progress className="progress w-full" value={uploadProgress} max="100" />
       )}
 
-      {/* {videoUrl && (
+      {videoUrl && (
         <video
           src={videoUrl}
           controls
           className="w-full rounded shadow border mt-2"
         />
-      )} */}
+      )}
       <FileUpload
         fileType="image"
         onSuccess={(res) => {
@@ -120,7 +120,7 @@ function VideoUploadForm() {
         }}
         onProgress={() => { }} // Optional: handle progress separately
       />
-      {/* {thumbnailUrl ? (
+      {thumbnailUrl ? (
         <Image
           src={thumbnailUrl}
           alt="Thumbnail Preview"
@@ -128,7 +128,7 @@ function VideoUploadForm() {
           height={360}
           className="w-full rounded shadow border mt-2 object-cover"
         />
-      ) : null} */}
+      ) : null}
 
 
       
