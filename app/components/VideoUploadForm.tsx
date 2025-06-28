@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import FileUpload from "./FileUpload";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 function VideoUploadForm() {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ function VideoUploadForm() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleUploadSuccess = (res: any) => {
     if (res?.url) {
@@ -51,6 +53,8 @@ function VideoUploadForm() {
       if (response.ok) {
         alert("🎉 Video data submitted successfully!");
         console.log("✅ Submitted:", data);
+        router.push("/");
+
 
         // Optionally reset the form
         setTitle("");
@@ -68,6 +72,7 @@ function VideoUploadForm() {
     } finally {
       setIsSubmitting(false);
     }
+    
   };
 
   return (
