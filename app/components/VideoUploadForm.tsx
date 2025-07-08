@@ -103,13 +103,7 @@ function VideoUploadForm() {
       />
 
       {uploadProgress !== null && (
-        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
-          <div
-            className="bg-purple-600 h-full transition-all duration-500 ease-in-out"
-            style={{ width: `${uploadProgress}%` }}
-          ></div>
-        </div>
-      
+        <progress className="progress w-full" value={uploadProgress} max="100" />
       )}
 
       {videoUrl && (
