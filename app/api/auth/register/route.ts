@@ -24,11 +24,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
       email,
-      password: hashedPassword,
+      password: password,
     });
 
     return NextResponse.json(

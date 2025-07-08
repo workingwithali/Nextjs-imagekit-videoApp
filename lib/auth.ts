@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "./db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { use } from "react";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -29,6 +30,9 @@ export const authOptions: NextAuthOptions = {
             credentials.password,
             user.password
           );
+          console.log( "user password",user.password);
+          
+          console.log("credentials.password", credentials.password);
 
           if (!isValid) {
             throw new Error("invalid password");
