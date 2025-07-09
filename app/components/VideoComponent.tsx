@@ -20,6 +20,8 @@ export default function VideoComponent({ video }: { video: IVideo }) {
                   width: "1080",
                 },
               ]}
+              alt={video.title}
+              urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
               poster={video.thumbnailUrl}
               controls={video.controls}
               className="w-full h-full object-cover"
