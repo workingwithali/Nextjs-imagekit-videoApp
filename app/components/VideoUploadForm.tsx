@@ -2,13 +2,14 @@
 
 import React, { useState } from "react";
 import FileUpload from "./FileUpload";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function VideoUploadForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [uploadthumbnail, setUploadthumbnail] = useState<number | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,10 +27,11 @@ function VideoUploadForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!title || !videoUrl) {
-      alert("Please complete all fields and upload a video.");
+    if (!title || !videoUrl || !thumbnailUrl) {
+      alert("Please complete all fields, upload a video, and a thumbnail.");
       return;
     }
+
 
     const formData = {
       title,
@@ -37,7 +39,7 @@ function VideoUploadForm() {
       videoUrl,
       thumbnailUrl,
     };
-    
+
 
     try {
       setIsSubmitting(true);
@@ -72,7 +74,7 @@ function VideoUploadForm() {
     } finally {
       setIsSubmitting(false);
     }
-    
+
   };
 
   return (
@@ -101,18 +103,6 @@ function VideoUploadForm() {
         onSuccess={handleUploadSuccess}
         onProgress={(progress) => setUploadProgress(progress)}
       />
-
-      {uploadProgress !== null && (
-        <progress className="progress w-full" value={uploadProgress} max="100" />
-      )}
-
-      {videoUrl && (
-        <video
-          src={videoUrl}
-          controls
-          className="w-full rounded shadow border mt-2"
-        />
-      )}
       <FileUpload
         fileType="image"
         onSuccess={(res) => {
@@ -123,9 +113,53 @@ function VideoUploadForm() {
             alert("❌ Thumbnail upload failed.");
           }
         }}
-        onProgress={() => { }} // Optional: handle progress separately
+        onProgress={(progress) => setUploadthumbnail(progress)} // Optional: handle progress separately
       />
-      {thumbnailUrl ? (
+
+      {uploadProgress !== null && (
+        <div className="text-sm text-gray-700 dark:text-gray-300">
+          Upload Progress: {uploadProgress}%
+          <div className="w-full bg-gray-500 rounded-full h-4 overflow-hidden shadow-inner">
+            <div
+              className="bg-purple-800 h-full transition-all duration-500 ease-in-out"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+
+        </div>
+      )}
+      {uploadthumbnail !== null && (
+        <div className="text-sm text-gray-700 dark:text-gray-300">
+          Upload Progress: {uploadthumbnail}%
+          <div className="w-full bg-gray-500 rounded-full h-4 overflow-hidden shadow-inner">
+            <div
+              className="bg-purple-800 h-full transition-all duration-500 ease-in-out"
+              style={{ width: `${uploadthumbnail}%` }}
+            ></div>
+          </div>
+
+        </div>
+      )}
+      {videoUrl && (
+        <div className="text-sm text-gray-500 mt-1">
+          ✅ Video ready
+        </div>
+      )}
+
+      {/* {videoUrl && (
+        <video
+          src={videoUrl}
+          controls
+          className="w-full rounded shadow border mt-2"
+        />
+      )} */}
+      
+      {thumbnailUrl && (
+        <div className="text-sm text-gray-500 mt-1">
+          ✅ Thumbnail ready
+        </div>
+      )}
+      {/* {thumbnailUrl ? (
         <Image
           src={thumbnailUrl}
           alt="Thumbnail Preview"
@@ -133,20 +167,44 @@ function VideoUploadForm() {
           height={360}
           className="w-full rounded shadow border mt-2 object-cover"
         />
-      ) : null}
-
-
+      ) : null} */}
       
-  
+
+
+
+      <button
+        type="button"
+        onClick={() => {
+          setTitle("");
+          setDescription("");
+          setVideoUrl(null);
+          setThumbnailUrl(null);
+          setUploadProgress(null);
+        }}
+        className="ml-2 text-sm text-gray-600 underline"
+      >
+        Reset Form
+      </button>
+
 
       <button
         type="submit"
         disabled={!videoUrl || !thumbnailUrl || isSubmitting}
-        className={`btn btn-primary pl-4 pr-4 pt-2 pb-2 border rounded-2xl ${(!videoUrl || isSubmitting) && "opacity-50 cursor-not-allowed"
+        className={`btn btn-primary px-4 py-2 border rounded-2xl flex justify-center items-center gap-2 ${(!videoUrl || !thumbnailUrl || isSubmitting) && "opacity-50 cursor-not-allowed"
           }`}
       >
-        {isSubmitting ? "Submitting..." : "Submit Video"}
+        {isSubmitting ? (
+          <>
+            <span className="loading loading-spinner"></span>
+            Submitting...
+          </>
+        ) : (
+          "Submit Video"
+        )}
       </button>
+
+
+
     </form>
   );
 }
